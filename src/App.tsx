@@ -2,6 +2,8 @@ import Eclipse from "./assets/images/Eclipse-circle-1.webp";
 import Content from './components/content';
 import Footer from './components/footer';
 import Header from './components/header';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { AppProps } from "./types/index"
 import { createWeb3Modal } from '@web3modal/wagmi/react'
 import { defaultWagmiConfig } from '@web3modal/wagmi/react/config'
@@ -45,6 +47,7 @@ const App: React.FC<AppProps> = ({ children }) => {
 
   return (
     <WagmiProvider config={config}>
+       <ToastContainer />
       <QueryClientProvider client={queryClient}>
         {children}
         <div className="App">

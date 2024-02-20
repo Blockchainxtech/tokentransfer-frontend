@@ -1,8 +1,12 @@
-import { type BaseError, useReadContract } from 'wagmi';
+import { useReadContract } from 'wagmi';
 import abi from "../abi/erc20.json"
 import Logo from "../assets/images/logo.png";
+import { post } from '../service/api';
+import { useEffect, useState } from 'react';
 
 const Header = () => {
+  const [balanceData, setBalanceData] = useState<number>();
+
   const storedData = localStorage.getItem('wagmi.store') ?? '';
 
   const parsedData = JSON.parse(storedData);
@@ -12,6 +16,7 @@ const Header = () => {
   // Retrieve the connected wallet address (assuming there's only one account)
   const connectedWalletAddress = accounts ? accounts[0] : null;
 
+  
   const { data: balance, error, isPending } = useReadContract({
     address: import.meta.env.VITE_WALLET_ADDRESS,
     abi: abi,
@@ -25,23 +30,25 @@ const Header = () => {
     functionName: 'decimals'
   });
 
-  const balanceValue = balance as string;
-  const tokenDecimalValue = tokenDecimal as number;
+  useEffect(() => {
+    if (!isPending && !error && balance !== null && tokenDecimal !== null) {
+      const balanceValue = balance as string;
+      const tokenDecimalValue = tokenDecimal as number;
+      const bVal = parseFloat(balanceValue);
+      const fromWei = bVal / Math.pow(10, tokenDecimalValue);
+      setBalanceData(fromWei);
+    }
+  }, [isPending, error, balance, tokenDecimal]);
 
-  const bVal = parseFloat(balanceValue);
 
-  const fromWei = bVal / Math.pow(10, tokenDecimalValue);
-
-  if (isPending) return <div>Loading...</div>;
-
-  if (error) {
-    const baseError = error as unknown as BaseError;
-    return (
-      <div>
-        Error: {baseError.shortMessage || baseError.message}
-      </div>
-    );
-  }
+   const connect=async()=>{
+    try {
+      const {data}=await post("/connect",{wallet_address:connectedWalletAddress})
+      console.log(data)
+    } catch (error) {
+      console.log(error)
+    }
+   }
 
   return (
     <header>
@@ -52,8 +59,15 @@ const Header = () => {
             <div className="logo-rotate">
               <img className="normal" src={Logo} width="200" alt="BlockchainX"/>
             </div>
-            Balance: {fromWei}
+            {isPending && <div>Loading...</div>}
+            {!isPending && !error && (
+              <div>
+                Balance: {balanceData}
+              </div>
+            )}
+            <div onClick={connect}>
             <w3m-button />
+            </div>
           </div>
         </div>
       </nav>
