@@ -27,10 +27,10 @@ jobs:
           CI: ''
 
       - name: Set up environment variables
-        env:
-          VITE_PROJECT_ID: ${{ secrets.VITE_PROJECT_ID }}
-          VITE_WALLET_ADDRESS: ${{ secrets.VITE_WALLET_ADDRESS }}
-          VITE_BACKEND_URL: ${{ secrets.VITE_BACKEND_URL }}
+        run: |
+          echo "VITE_PROJECT_ID=${{ secrets.VITE_PROJECT_ID }}" >> $GITHUB_ENV
+          echo "VITE_WALLET_ADDRESS=${{ secrets.VITE_WALLET_ADDRESS }}" >> $GITHUB_ENV
+          echo "VITE_BACKEND_URL=${{ secrets.VITE_BACKEND_URL }}" >> $GITHUB_ENV
 
       - name: Build page
         run: CI=false npm run build
