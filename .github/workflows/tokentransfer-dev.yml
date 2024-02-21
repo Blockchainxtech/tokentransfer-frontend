@@ -39,7 +39,7 @@ jobs:
         uses: burnett01/rsync-deployments@4.0
         with:
           switches: "-avzr --delete --exclude='.htaccess'"
-          path: ./build/
+          path: ./dist/
           remote_path: '/var/www/html/tokentransfer-frontend'
           remote_host: ${{ secrets.SERVER_IP }}
           remote_user: ${{ secrets.USERNAME }}
