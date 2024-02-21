@@ -1,6 +1,7 @@
 {
   "name": "tokentransfer-frontend",
   "private": true,
+  "homepage": "http://64.225.52.122/tokentransfer-frontend",
   "version": "0.0.0",
   "type": "module",
   "scripts": {
