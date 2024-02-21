@@ -1,6 +1,7 @@
 import { useReadContract } from 'wagmi';
 import abi from "../abi/erc20.json"
 import Logo from "../assets/images/logo.png";
+import bgImage from "../assets/images/body-background.png";
 import { post } from '../service/api';
 import { useEffect, useState } from 'react';
 import useLocalStorage from '../hooks/useLocalStorage';
@@ -8,6 +9,7 @@ import { useAccount } from 'wagmi'
 
 
 const Header = () => {
+  console.log('image', bgImage);
   const [balanceData, setBalanceData] = useState<number>();
 
   const [storedValue, setStoredValue] = useLocalStorage('sessionToken');
