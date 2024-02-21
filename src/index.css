@@ -1,0 +1,187 @@
+*{font-family: "Exo 2";}
+html{scroll-behavior:smooth;}
+body{padding:0;margin:0;font-size:14px;line-height:140%;background:#000;color:#FFF !important;
+  font-size: 18px;
+  line-height: 1.6;
+  margin: 0;
+  padding: 0;
+  color: #d9d9d9;
+  background-size: contain;
+  background-repeat: repeat;
+  width: 100%;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+  position: relative;
+  height: 100vh;
+}
+h1, h2, h3, h4,h5,h6,p, a{font-weight: 400;}
+a{color:#FFF;text-decoration:none;}
+.App {
+  position: relative;
+}
+.banner-eclipse {
+  position: absolute;
+  left: -10%;
+  top: -45%;
+  opacity: .05;
+}
+.banner-eclipse-alt {
+  position: absolute;
+  left: -23%;
+  top: -30%;
+  opacity: .05;
+}
+.green-vector {
+  position: absolute;
+  width: 270px;
+  height: 270px;
+  background: linear-gradient(119.99deg,#7ba49a 21.9%,#159777 125.17%);
+  filter: blur(197px);
+}
+
+.header{
+  padding:15px 0;
+  border-bottom:1px solid rgba(217,217,217,.2);
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  align-items: center;
+  margin-bottom:70px;
+}
+
+.connect-wallet {
+  padding: 12px 32px;
+  background: rgba(78,31,163,.3);
+  border: 1px solid #4e1fa3;
+  border-radius: 8px;
+  -webkit-text-fill-color: #d9d9d9;
+}
+.connect-wallet:hover, .connect-wallet:focus, .connect-wallet:active:focus {
+  color: #d9d9d9;
+  -webkit-text-fill-color: #d9d9d9;
+  background-color: #040914;
+  border: 1px solid #4e1fa3;
+  outline:none;
+  box-shadow:none;
+}
+.transfer-section .box{
+  position: relative;
+  background: rgba(255,255,255,.06);
+  border-radius: 36px;
+  padding: 70px;
+  margin-bottom: 50px;
+}
+.main-heading{
+    padding-top: 0px;
+    padding-bottom: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+h1 {
+  font-family: "Exo 2";
+  font-style: normal;
+  font-weight: 600;
+  font-size: 50px;
+  color: #fff !important;
+  text-align: center;
+  padding: 0;
+}
+
+.transfer-section .form-control {
+  border-radius: 10px!important;
+  background-color: transparent!important;
+  border: 1px solid #d9d9d92e!important;
+  font-family: "Exo 2"!important;
+  color: #d9d9d9!important;
+  padding: 0 15px !important;
+  height: 70px !important;
+  font-size: 22px !important;
+  margin-bottom:0px;
+}
+.transfer-section .form-floating
+{
+  margin-bottom:50px;
+}
+.transfer-section .form-floating label {
+  color: #d9d9d9!important;
+  opacity: .8!important;
+  font-weight: 300;
+  font-size: 20px;
+  font-family: "Exo 2",sans-serif;
+  line-height: 1.4;
+}
+.form-floating>label {
+  padding: 1rem 15px;
+}
+.transfer-section .form-control:focus{
+  box-shadow:none;
+  outline:none;
+}
+.form-floating>.form-control:focus~label, .form-floating>.form-control:not(:placeholder-shown)~label, .form-floating>.form-select~label {
+  opacity: .65;
+  transform: scale(.80) translateY(-0.70rem) translateX(0rem);
+  font-size: 16px;
+}
+.footer .copyright{
+  margin-top:30px;
+  padding:30px 0;
+  text-align:center;
+  border-top:1px solid rgba(217,217,217,.2);
+}
+.transfer-section .form-select option{
+  color: #FFF!important;
+  background: #040914;
+  font-size:14px;
+}
+.transfer-section .form-select{
+  font-size-adjust: 0.3;
+  text-indent: 5px;
+}
+input::-webkit-inner-spin-button{
+  -webkit-appearance: none;
+}
+.transfer-section .connect-wallet{
+  padding: 15px 60px;
+  font-weight:600;
+  font-size:20px;
+}
+.transfer-section .table td, .transfer-section .table th{
+  color:#FFF;
+  border:1px solid #4d426e;
+  font-size:14px;
+}
+.transfer-section .table th{
+  background:rgba(78,31,163,.3);
+  border-bottom:1px solid #4d426e;
+}
+.transfer-section .table button{
+  border:1px solid #4d426e;
+  background:rgba(78,31,163,.3);
+  color:#FFF;
+  border-radius: 5px!important;
+}
+.table>:not(:last-child)>:last-child>* {
+  border-bottom-color: #4d426e;
+}
+.invalid-feedback2{
+  color:red;
+  text-align:left;
+}
+.form-floating > .form-control:focus ~ label::after, .form-floating > .form-control:not(:placeholder-shown) ~ label::after, .form-floating > .form-control-plaintext ~ label::after, .form-floating > .form-select ~ label::after{
+  display:none;
+}
+.transfer-section .form-control[placeholder], .form-control[placeholder], .transfer-section *[placeholder] {
+  color: #FFF !important;
+}
+.table > :not(caption) > * > *{
+  background:none !important;
+}
+.transfer-section .table th {
+  background: rgba(78,31,163,.3) !important;
+}
+.transfer-section .table tr td:first-child,
+.transfer-section .table tr td:nth-child(4),
+.transfer-section .table tr td:nth-child(5){
+  width:100px !important;
+}
