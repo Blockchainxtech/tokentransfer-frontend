@@ -10,7 +10,7 @@ import { useAccount } from 'wagmi'
 const Header = () => {
   const [balanceData, setBalanceData] = useState<number>();
 
-  const [, setStoredValue] = useLocalStorage('sessionToken');
+  const [storedValue, setStoredValue] = useLocalStorage('sessionToken');
 
   const storedData = localStorage.getItem('wagmi.store') ?? '';
 
@@ -58,6 +58,7 @@ const Header = () => {
   useEffect(() => {
     if (isConnected) {
       connect()  
+      console.log(storedValue,"value")
     } else {
       setStoredValue(null)
     }

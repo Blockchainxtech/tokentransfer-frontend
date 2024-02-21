@@ -3,6 +3,7 @@ import { get } from "../service/api/index"
 export const fetchTransaction = async (connectedWalletAddress:string, storedValue:string) => {
     try {
         const data = await get(`/transactions/${connectedWalletAddress}`, storedValue);
+        console.log(data)
         if (data && data.transactions) {
             return data.transactions;
         } else {
