@@ -22,6 +22,11 @@ jobs:
     - run: npm install
       env:
         CI: ''    
+    - name: Build ENV
+      env:
+        VITE_PROJECT_ID: ${{ secrets.VITE_PROJECT_ID }}
+        VITE_WALLET_ADDRESS: ${{ secrets.VITE_WALLET_ADDRESS }}
+        VITE_BACKEND_URL: ${{ secrets.VITE_BACKEND_URL }}
     - name: Build page
       run: CI=false npm run build
     - name: rsync deployments
