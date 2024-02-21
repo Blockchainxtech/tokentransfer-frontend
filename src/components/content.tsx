@@ -1,19 +1,24 @@
-// import { useReadContract } from 'wagmi';
 import { type BaseError, useWaitForTransactionReceipt, useWriteContract, useReadContract } from 'wagmi';
 import abi from "../abi/erc20.json";
-import { FormData } from '../types';
+import { FormData, Transaction } from '../types';
 import { schema } from '../validations/transfer-input-validation';
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { toast } from 'react-toastify';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import useLocalStorage from '../hooks/useLocalStorage';
+import { fetchTransaction } from '../utils/fetchTransaction';
 
 const Content = () => {
     const { data: hash, error, isPending, writeContract } = useWriteContract();
 
+    const [transactions, setTransactions] = useState([]);
+
+    const [storedValue,] = useLocalStorage('sessionToken');
+
     const { isLoading: isConfirming, isSuccess: isConfirmed } = useWaitForTransactionReceipt({ hash });
 
-    const { register, handleSubmit, formState: { errors } } = useForm({
+    const { register, handleSubmit, reset, formState: { errors } } = useForm({
         resolver: yupResolver(schema)
     });
 
@@ -39,14 +44,12 @@ const Content = () => {
 
         const amount = data.value * Math.pow(10, 18)
 
-        console.log(balanceValue, amount)
-
         if (balanceValue < amount) {
             toast.dismiss();
-            return toast.error('Insufficient Balance',{
+            return toast.error('Insufficient Balance', {
                 autoClose: 3000,
                 pauseOnHover: false,
-                closeOnClick: true 
+                closeOnClick: true
             });
         }
 
@@ -56,37 +59,40 @@ const Content = () => {
             functionName: 'transfer',
             args: [data.address, amount],
         });
-        
+        reset();
     };
 
-    useEffect(()=>{
-        if (isConfirmed && hash) {
-            toast.dismiss();
-            toast.success("Transaction successfully completed",{
-                autoClose: 3000,
-                pauseOnHover: false,
-                closeOnClick: true 
-            });
-            
-        } else if (error) {
-            const errorMessage = (error as BaseError).shortMessage || error.message;
-            toast.dismiss();
-            toast.error('Error: ' + errorMessage,{
-                autoClose: 3000,
-                pauseOnHover: false,
-                closeOnClick: true 
-            });
-        }
-    },[isConfirmed,error,hash])
-   
-   
-    // const { data: tokenName } = useReadContract({
-    //     address: import.meta.env.VITE_WALLET_ADDRESS,
-    //     abi: abi,
-    //     functionName: 'name',
-    // });
+    useEffect(() => {
+        const fetchData = async () => {
+            if (isConfirmed && hash) {
+                toast.dismiss();
+                toast.success("Transaction Successfully Completed", {
+                    autoClose: 3000,
+                    pauseOnHover: false,
+                    closeOnClick: true
+                });
+                const transactions = await fetchTransaction(connectedWalletAddress, storedValue);
+                setTransactions(transactions);
+            } else if (error) {
+                const errorMessage = (error as BaseError).shortMessage || error.message;
+                toast.dismiss();
+                toast.error('Error: ' + errorMessage, {
+                    autoClose: 3000,
+                    pauseOnHover: false,
+                    closeOnClick: true
+                });
+            }
+        };
+        fetchData();
+    }, [isConfirmed, error, hash])
 
-    // const name = tokenName as string;
+    useEffect(() => {
+        const fetchData = async () => {
+            const transactions = await fetchTransaction(connectedWalletAddress, storedValue);
+            setTransactions(transactions);
+        };
+        fetchData();
+    }, [connectedWalletAddress, storedValue])
 
     return (
         <>
@@ -99,15 +105,6 @@ const Content = () => {
                                 <form onSubmit={handleSubmit(submit)}>
                                     <div className="row">
                                         <div className="col-md-4">
-                                            {/* <div className="form-floating">
-                                                <select className="form-control form-select" id="floatingTokens" aria-label="Tokens" name="selectedToken" value={formData.selectedToken} onChange={handleInputChange}>
-                                                    <option selected>Tokens</option>
-                                                    <option value={name}>{name}</option>
-                                                    <option value="2">Two</option>
-                                                    <option value="3">Three</option>
-                                                </select>
-                                                <label htmlFor="floatingTokens">Test Tokens</label>
-                                            </div> */}
                                         </div>
                                         <div className="col-md-4">
                                             <div className="form-floating mb-3">
@@ -127,11 +124,10 @@ const Content = () => {
 
                                     <div className="row">
                                         <div className="col-md-12">
-                                            <button className="btn btn-primary connect-wallet" disabled={isPending} type="submit">{isPending ? 'Loading...' : 'Transfer'} </button>
+                                            <button className="btn btn-primary connect-wallet" disabled={isPending || Object.keys(errors).length > 0} type="submit">{isPending ? 'Loading...' : 'Transfer'} </button>
                                         </div>
                                     </div>
                                 </form>
-                                {hash && <div>Transaction Hash: {hash}</div>}
                                 {isConfirming && <div>Waiting for confirmation...</div>}
                             </div>
                         </div>
@@ -159,79 +155,24 @@ const Content = () => {
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr>
-                                                <td>-</td>
-                                                <td><button>Signup</button></td> 
-                                                <td>19/02/2024 Monday</td>
-                                                <td>1:22:04 PM</td>
-                                                <td>oX5e27c...953af96</td>
-                                                <td>oX5e27c...953af96</td>
-                                                <td><button>View</button></td>
-                                            </tr>
-                                            <tr>
-                                                <td>-</td>
-                                                <td><button>Signup</button></td>
-                                                <td>19/02/2024 Monday</td>
-                                                <td>1:22:04 PM</td>
-                                                <td>oX5e27c...953af96</td>
-                                                <td>oX5e27c...953af96</td>
-                                               
-                                                <td><button>View</button></td>
-                                            </tr>
-                                            <tr>
-                                                <td>-</td>
-                                                <td><button>Signup</button></td>
-                                                <td>19/02/2024 Monday</td>
-                                                <td>1:22:04 PM</td>
-                                                <td>oX5e27c...953af96</td>
-                                                <td>oX5e27c...953af96</td>
-                                                <td><button>View</button></td>
-                                            </tr>
-                                            <tr>
-                                                <td>-</td>
-                                                <td><button>Signup</button></td>
-                                                <td>19/02/2024 Monday</td>
-                                                <td>1:22:04 PM</td>
-                                                <td>oX5e27c...953af96</td>
-                                                <td>oX5e27c...953af96</td>
-                                                <td><button>View</button></td>
-                                            </tr>
-                                            <tr>
-                                                <td>-</td>
-                                                <td><button>Signup</button></td>
-                                                <td>19/02/2024 Monday</td>
-                                                <td>1:22:04 PM</td>
-                                                <td>oX5e27c...953af96</td>
-                                                <td>oX5e27c...953af96</td>
-                                                <td><button>View</button></td>
-                                            </tr>
-                                            <tr>
-                                                <td>-</td>
-                                                <td><button>Signup</button></td>
-                                                <td>19/02/2024 Monday</td>
-                                                <td>1:22:04 PM</td>
-                                                <td>oX5e27c...953af96</td>
-                                                <td>oX5e27c...953af96</td>
-                                                <td><button>View</button></td>
-                                            </tr>
-                                            <tr>
-                                                <td>-</td>
-                                                <td><button>Signup</button></td>
-                                                <td>19/02/2024 Monday</td>
-                                                <td>1:22:04 PM</td>
-                                                <td>oX5e27c...953af96</td>
-                                                <td>oX5e27c...953af96</td>
-                                                <td><button>View</button></td>
-                                            </tr>
-                                            <tr>
-                                                <td>-</td>
-                                                <td><button>Signup</button></td>
-                                                <td>19/02/2024 Monday</td>
-                                                <td>1:22:04 PM</td>
-                                                <td>oX5e27c...953af96</td>
-                                                <td>oX5e27c...953af96</td>
-                                                <td><button>View</button></td>
-                                            </tr>
+                                            {transactions.length > 0 ? (
+                                                transactions.map((transaction: Transaction, index: number) => (
+                                                    <tr key={index}>
+                                                        <td>{transaction?.transaction_hash}</td>
+                                                        <td><button>Transfer</button></td>
+                                                        <td>{new Date(transaction?.created_at).toLocaleDateString()}</td>
+                                                        <td>{new Date(transaction?.created_at).toLocaleTimeString()}</td>
+                                                        <td>{transaction?.sender_address}</td>
+                                                        <td>{transaction?.receiver_address}</td>
+                                                        <td> <a href={`https://mumbai.polygonscan.com/tx/${transaction?.transaction_hash}`} target='_blank'><button>View</button></a></td>
+                                                    </tr>
+                                                ))
+                                            ) : (
+                                                <tr>
+                                                    <td colSpan={7}>No transactions available</td>
+                                                </tr>
+                                            )}
+
                                         </tbody>
                                     </table>
                                 </div>
