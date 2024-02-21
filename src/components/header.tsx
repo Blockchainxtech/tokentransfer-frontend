@@ -48,7 +48,6 @@ const Header = () => {
   const connect = async () => {
     try {
       const data = await post("/connect", { wallet_address: connectedWalletAddress })
-      console.log(data.jwt_token)
       setStoredValue(data.jwt_token)
     } catch (error) {
       console.log(error)
@@ -62,6 +61,14 @@ const Header = () => {
       setStoredValue(null)
     }
   }, [isConnected])
+
+  const { data: tokenName } = useReadContract({
+        address: import.meta.env.VITE_WALLET_ADDRESS,
+        abi: abi,
+        functionName: 'name',
+    });
+
+    const name = tokenName as string;
 
 
 
@@ -77,7 +84,7 @@ const Header = () => {
             {isPending && <div>Loading...</div>}
             {!isPending && !error && (
               <div>
-                Balance: {balanceData}
+              {name} Balance: {balanceData}
               </div>
             )}
             <w3m-button />

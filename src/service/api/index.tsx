@@ -2,8 +2,6 @@ import axios, { AxiosResponse } from 'axios';
 
 const BASE_URL = import.meta.env.VITE_BACKEND_URL;
 
-let sessionToken:string|null; 
-
 const handleResponse = (response: AxiosResponse) => {
     if (response.status < 200 || response.status >= 300) {
         throw new Error(response.data.message || 'Something went wrong');
@@ -12,7 +10,7 @@ const handleResponse = (response: AxiosResponse) => {
     return response.data.data;
 };
 
-const get = async (endpoint: string) => {
+const get = async (endpoint: string,sessionToken?:string) => {
     try {
         const response = await axios.get(`${BASE_URL}${endpoint}`, {
             headers: {
