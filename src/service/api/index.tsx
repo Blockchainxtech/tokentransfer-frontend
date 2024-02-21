@@ -1,6 +1,6 @@
 import axios, { AxiosResponse } from 'axios';
 
-const BASE_URL = 'http://64.225.52.122:3007/api/v1/user';
+const BASE_URL = import.meta.env.VITE_BACKEND_URL;
 
 let sessionToken:string|null; 
 
