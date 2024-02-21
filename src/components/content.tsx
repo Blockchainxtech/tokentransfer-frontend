@@ -15,6 +15,8 @@ const Content = () => {
 
     const [transactions, setTransactions] = useState([]);
 
+    const [connected, setConnected] = useState(false);
+
     const [storedValue,] = useLocalStorage('sessionToken');
 
     const { isConnected } = useAccount()
@@ -100,17 +102,18 @@ const Content = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-            if (isConnected) {
+            if (isConnected && !connected) { // Check if connected and not already fetched
+                setConnected(true);
+                console.log(storedValue)
                 if (!storedValue) return
                 const transactions = await fetchTransaction(connectedWalletAddress, storedValue);
                 setTransactions(transactions);
-            } else {
-                setTransactions([]);
             }
         };
-
         fetchData();
-    }, [isConnected]);
+    }, [isConnected, connected, storedValue, connectedWalletAddress]);
+
+   
 
     return (
         <>
