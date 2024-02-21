@@ -31,9 +31,10 @@ jobs:
           echo "VITE_PROJECT_ID=${{ secrets.VITE_PROJECT_ID }}" >> $GITHUB_ENV
           echo "VITE_WALLET_ADDRESS=${{ secrets.VITE_WALLET_ADDRESS }}" >> $GITHUB_ENV
           echo "VITE_BACKEND_URL=${{ secrets.VITE_BACKEND_URL }}" >> $GITHUB_ENV
+          echo "VITE_SECRET_KEY=${{ secrets.VITE_SECRET_KEY }}" >> $GITHUB_ENV
 
       - name: Build page
-        run: CI=false npm run build --base-href=/tokentransfer-frontend/
+        run: CI=false npm run build 
 
       - name: Rsync deployments
         uses: burnett01/rsync-deployments@4.0
