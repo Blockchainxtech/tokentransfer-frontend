@@ -1,6 +1,6 @@
-*{font-family:'Manrope', sans-serif;}
+*{font-family: "Exo 2";}
 html{scroll-behavior:smooth;}
-body{padding:0;margin:0;font-size:14px;line-height:140%;background:#000;;color:#FFF;
+body{padding:0;margin:0;font-size:14px;line-height:140%;background:#000;color:#FFF !important;
   font-size: 18px;
   line-height: 1.6;
   margin: 0;
@@ -16,7 +16,6 @@ body{padding:0;margin:0;font-size:14px;line-height:140%;background:#000;;color:#
 }
 h1, h2, h3, h4,h5,h6,p, a{font-weight: 400;}
 a{color:#FFF;text-decoration:none;}
-
 .App {
   position: relative;
 }
@@ -84,7 +83,7 @@ h1 {
   font-style: normal;
   font-weight: 600;
   font-size: 50px;
-  color: #fff;
+  color: #fff !important;
   text-align: center;
   padding: 0;
 }
@@ -95,9 +94,13 @@ h1 {
   border: 1px solid #d9d9d92e!important;
   font-family: "Exo 2"!important;
   color: #d9d9d9!important;
-  padding: 0 15px;
-  height: 70px;
-  font-size: 22px;
+  padding: 0 15px !important;
+  height: 70px !important;
+  font-size: 22px !important;
+  margin-bottom:0px;
+}
+.transfer-section .form-floating
+{
   margin-bottom:50px;
 }
 .transfer-section .form-floating label {
@@ -160,4 +163,25 @@ input::-webkit-inner-spin-button{
 }
 .table>:not(:last-child)>:last-child>* {
   border-bottom-color: #4d426e;
+}
+.invalid-feedback2{
+  color:red;
+  text-align:left;
+}
+.form-floating > .form-control:focus ~ label::after, .form-floating > .form-control:not(:placeholder-shown) ~ label::after, .form-floating > .form-control-plaintext ~ label::after, .form-floating > .form-select ~ label::after{
+  display:none;
+}
+.transfer-section .form-control[placeholder], .form-control[placeholder], .transfer-section *[placeholder] {
+  color: #FFF !important;
+}
+.table > :not(caption) > * > *{
+  background:none !important;
+}
+.transfer-section .table th {
+  background: rgba(78,31,163,.3) !important;
+}
+.transfer-section .table tr td:first-child,
+.transfer-section .table tr td:nth-child(4),
+.transfer-section .table tr td:nth-child(5){
+  width:100px !important;
 }

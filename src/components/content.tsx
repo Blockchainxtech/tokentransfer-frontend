@@ -125,27 +125,25 @@ const Content = () => {
                                 <div className="main-heading"><h1>Token Transfer Platform</h1></div>
                                 <form onSubmit={handleSubmit(submit)}>
                                     <div className="row">
-                                        <div className="col-md-4">
-                                        </div>
-                                        <div className="col-md-4">
+                                        <div className="col-md-6">
                                             <div className="form-floating mb-3">
                                                 <input type="text" className="form-control" id="floatingWallet" placeholder="0xA0Cf…251e"  {...register('address')} />
                                                 <label htmlFor="floatingWallet">Wallet Address</label>
-                                                {errors.address && <div className="invalid-feedback">{errors.address.message}</div>}
+                                                {errors.address && <div className="invalid-feedback2">{errors.address.message}</div>}
                                             </div>
                                         </div>
-                                        <div className="col-md-4">
+                                        <div className="col-md-6">
                                             <div className="form-floating">
                                                 <input type="text" className="form-control" id="floatingAmount" placeholder="0.05"  {...register('value')} />
                                                 <label htmlFor="floatingAmount">Amount</label>
-                                                {errors.value && <div className="invalid-feedback">{errors.value.message}</div>}
+                                                {errors.value && <div className="invalid-feedback2">{errors.value.message}</div>}
                                             </div>
                                         </div>
                                     </div>
 
                                     <div className="row">
                                         <div className="col-md-12">
-                                            <button className="btn btn-primary connect-wallet" disabled={isPending || Object.keys(errors).length > 0} type="submit">{isPending ? 'Loading...' : 'Transfer'} </button>
+                                            <button className="connect-wallet" disabled={isPending || Object.keys(errors).length > 0} type="submit">{isPending ? 'Loading...' : 'Transfer'} </button>
                                         </div>
                                     </div>
                                 </form>
@@ -166,20 +164,20 @@ const Content = () => {
                                     <table className="table table-bordered">
                                         <thead>
                                             <tr>
-                                                <th>Txn hash</th>
+                                                {/* <th>Txn hash</th> */}
                                                 <th>Method</th>
                                                 <th>Date</th>
                                                 <th>Time</th>
                                                 <th>From</th>
                                                 <th>To</th>
-                                                <th></th>
+                                                <th>Txn hash</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             {transactions.length > 0 ? (
                                                 transactions.map((transaction: Transaction, index: number) => (
                                                     <tr key={index}>
-                                                        <td>{transaction?.transaction_hash}</td>
+                                                        {/* <td>{transaction?.transaction_hash}</td> */}
                                                         <td><button>Transfer</button></td>
                                                         <td>{new Date(transaction?.created_at).toLocaleDateString()}</td>
                                                         <td>{new Date(transaction?.created_at).toLocaleTimeString()}</td>
