@@ -3,9 +3,13 @@ import abi from "../abi/erc20.json"
 import Logo from "../assets/images/logo.png";
 import { post } from '../service/api';
 import { useEffect, useState } from 'react';
+import useLocalStorage from '../hooks/useLocalStorage';
+import { useAccount } from 'wagmi'
 
 const Header = () => {
   const [balanceData, setBalanceData] = useState<number>();
+
+  const [, setStoredValue] = useLocalStorage('sessionToken');
 
   const storedData = localStorage.getItem('wagmi.store') ?? '';
 
@@ -16,7 +20,6 @@ const Header = () => {
   // Retrieve the connected wallet address (assuming there's only one account)
   const connectedWalletAddress = accounts ? accounts[0] : null;
 
-  
   const { data: balance, error, isPending } = useReadContract({
     address: import.meta.env.VITE_WALLET_ADDRESS,
     abi: abi,
@@ -30,6 +33,8 @@ const Header = () => {
     functionName: 'decimals'
   });
 
+  const { isConnected } = useAccount()
+
   useEffect(() => {
     if (!isPending && !error && balance !== null && tokenDecimal !== null) {
       const balanceValue = balance as string;
@@ -40,15 +45,25 @@ const Header = () => {
     }
   }, [isPending, error, balance, tokenDecimal]);
 
-
-   const connect=async()=>{
+  const connect = async () => {
     try {
-      const {data}=await post("/connect",{wallet_address:connectedWalletAddress})
-      console.log(data)
+      const data = await post("/connect", { wallet_address: connectedWalletAddress })
+      console.log(data.jwt_token)
+      setStoredValue(data.jwt_token)
     } catch (error) {
       console.log(error)
     }
-   }
+  }
+
+  useEffect(() => {
+    if (isConnected) {
+      connect()
+    } else {
+      setStoredValue(null)
+    }
+  }, [isConnected])
+
+
 
   return (
     <header>
@@ -57,7 +72,7 @@ const Header = () => {
           <div className="header">
             <div className="green-vector"></div>
             <div className="logo-rotate">
-              <img className="normal" src={Logo} width="200" alt="BlockchainX"/>
+              <img className="normal" src={Logo} width="200" alt="BlockchainX" />
             </div>
             {isPending && <div>Loading...</div>}
             {!isPending && !error && (
@@ -65,9 +80,7 @@ const Header = () => {
                 Balance: {balanceData}
               </div>
             )}
-            <div onClick={connect}>
             <w3m-button />
-            </div>
           </div>
         </div>
       </nav>
