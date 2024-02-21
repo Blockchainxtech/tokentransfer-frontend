@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 import useLocalStorage from '../hooks/useLocalStorage';
 import { useAccount } from 'wagmi'
 
+
 const Header = () => {
   const [balanceData, setBalanceData] = useState<number>();
 
@@ -56,7 +57,7 @@ const Header = () => {
 
   useEffect(() => {
     if (isConnected) {
-      connect()
+      connect()  
     } else {
       setStoredValue(null)
     }
@@ -69,8 +70,6 @@ const Header = () => {
     });
 
     const name = tokenName as string;
-
-
 
   return (
     <header>

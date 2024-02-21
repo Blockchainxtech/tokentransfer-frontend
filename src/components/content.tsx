@@ -8,6 +8,7 @@ import { toast } from 'react-toastify';
 import { useEffect, useState } from 'react';
 import useLocalStorage from '../hooks/useLocalStorage';
 import { fetchTransaction } from '../utils/fetchTransaction';
+import { useAccount } from 'wagmi'
 
 const Content = () => {
     const { data: hash, error, isPending, writeContract } = useWriteContract();
@@ -15,6 +16,8 @@ const Content = () => {
     const [transactions, setTransactions] = useState([]);
 
     const [storedValue,] = useLocalStorage('sessionToken');
+
+    const { isConnected } = useAccount()
 
     const { isLoading: isConfirming, isSuccess: isConfirmed } = useWaitForTransactionReceipt({ hash });
 
@@ -87,12 +90,27 @@ const Content = () => {
     }, [isConfirmed, error, hash])
 
     useEffect(() => {
+        if (!storedValue) return
         const fetchData = async () => {
             const transactions = await fetchTransaction(connectedWalletAddress, storedValue);
             setTransactions(transactions);
         };
         fetchData();
     }, [connectedWalletAddress, storedValue])
+
+    useEffect(() => {
+        const fetchData = async () => {
+            if (isConnected) {
+                if (!storedValue) return
+                const transactions = await fetchTransaction(connectedWalletAddress, storedValue);
+                setTransactions(transactions);
+            } else {
+                setTransactions([]);
+            }
+        };
+
+        fetchData();
+    }, [isConnected]);
 
     return (
         <>

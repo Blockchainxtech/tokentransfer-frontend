@@ -11,6 +11,7 @@ const handleResponse = (response: AxiosResponse) => {
 };
 
 const get = async (endpoint: string,sessionToken?:string) => {
+    if(!sessionToken) return
     try {
         const response = await axios.get(`${BASE_URL}${endpoint}`, {
             headers: {
