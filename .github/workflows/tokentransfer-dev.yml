@@ -2,39 +2,45 @@ name: tokentransfer-frontend
 
 on:
   push:
-    branches: [ development-new ]
+    branches: [development-new]
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     strategy:
       matrix:
-        node-version: [ 14.x ]
+        node-version: [14.x]
 
     steps:
-    - uses: actions/checkout@v2
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v1
-      with:
-        node-version: ${{ matrix.node-version }}
-    - run: npm install
-      env:
-        CI: ''    
-    - name: Build ENV
-      env:
-        VITE_PROJECT_ID: ${{ secrets.VITE_PROJECT_ID }}
-        VITE_WALLET_ADDRESS: ${{ secrets.VITE_WALLET_ADDRESS }}
-        VITE_BACKEND_URL: ${{ secrets.VITE_BACKEND_URL }}
-    - name: Build page
-      run: CI=false npm run build
-    - name: rsync deployments
-      uses: burnett01/rsync-deployments@4.0
-      with:
-        switches: -avzr --delete --exclude=".htaccess"
-        path: ./build/
-        remote_path: '/var/www/html/tokentransfer-frontend'
-        remote_host: ${{ secrets.SERVER_IP }}
-        remote_user: ${{ secrets.USERNAME }}
-        remote_key: ${{ secrets.SERVER_SSH_KEY }}
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install dependencies
+        run: npm install
+        env:
+          CI: ''
+
+      - name: Set up environment variables
+        env:
+          VITE_PROJECT_ID: ${{ secrets.VITE_PROJECT_ID }}
+          VITE_WALLET_ADDRESS: ${{ secrets.VITE_WALLET_ADDRESS }}
+          VITE_BACKEND_URL: ${{ secrets.VITE_BACKEND_URL }}
+
+      - name: Build page
+        run: CI=false npm run build
+
+      - name: Rsync deployments
+        uses: burnett01/rsync-deployments@4.0
+        with:
+          switches: "-avzr --delete --exclude='.htaccess'"
+          path: ./build/
+          remote_path: '/var/www/html/tokentransfer-frontend'
+          remote_host: ${{ secrets.SERVER_IP }}
+          remote_user: ${{ secrets.USERNAME }}
+          remote_key: ${{ secrets.SERVER_SSH_KEY }}
