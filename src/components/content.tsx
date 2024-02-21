@@ -113,7 +113,7 @@ const Content = () => {
         fetchData();
     }, [isConnected, connected, storedValue, connectedWalletAddress]);
 
-   
+
 
     return (
         <>
@@ -181,8 +181,8 @@ const Content = () => {
                                                         <td><button>Transfer</button></td>
                                                         <td>{new Date(transaction?.created_at).toLocaleDateString()}</td>
                                                         <td>{new Date(transaction?.created_at).toLocaleTimeString()}</td>
-                                                        <td>{transaction?.sender_address}</td>
-                                                        <td>{transaction?.receiver_address}</td>
+                                                        <td>{transaction?.sender_address && transaction.sender_address.slice(0, 4)}****{transaction?.sender_address && transaction.sender_address.slice(-4)}</td>
+                                                        <td>{transaction?.receiver_address && transaction.receiver_address.slice(0, 4)}****{transaction?.receiver_address && transaction.receiver_address.slice(-4)}</td>
                                                         <td> <a href={`https://mumbai.polygonscan.com/tx/${transaction?.transaction_hash}`} target='_blank'><button>View</button></a></td>
                                                     </tr>
                                                 ))
